@@ -1,6 +1,10 @@
-import { StatusBadge } from "./StatusBadge";
+import { StatusBadge, type ConnectionStatus } from "./StatusBadge";
 
-export function Header() {
+interface HeaderProps {
+  status?: ConnectionStatus;
+}
+
+export function Header({ status = "offline" }: HeaderProps) {
   return (
     <header className="app-header">
       <div className="app-header__brand">
@@ -9,7 +13,7 @@ export function Header() {
       </div>
 
       <div className="app-header__actions">
-        <StatusBadge status="offline" />
+        <StatusBadge status={status} />
         <button type="button" className="icon-button" aria-label="Settings">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path

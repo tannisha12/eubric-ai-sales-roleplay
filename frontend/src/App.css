@@ -368,6 +368,58 @@
   color: #f0817f;
 }
 
+/* ---------- AI status panel ---------- */
+
+.ai-status-panel__indicator {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  background: var(--surface-2);
+}
+
+.ai-status-panel__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.ai-status-panel__label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.ai-status-panel__indicator--listening .ai-status-panel__dot {
+  background: var(--accent);
+}
+
+.ai-status-panel__indicator--thinking .ai-status-panel__dot {
+  background: var(--status-warning);
+}
+
+.ai-status-panel__indicator--speaking .ai-status-panel__dot {
+  background: var(--status-good);
+}
+
+.ai-status-panel__dot--pulse {
+  animation: status-dot-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes status-dot-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 0.5;
+  }
+}
+
 /* ---------- Performance card / meters ---------- */
 
 .performance-card__list {
