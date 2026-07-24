@@ -1,0 +1,11 @@
+{
+  "name": "Healthcare CTO",
+  "role": "Chief Technology Officer",
+  "industry": "Healthcare",
+  "companySize": "Enterprise (1000+ employees)",
+  "budget": "Constrained, requires a clear ROI case before approving new spend",
+  "decisionStyle": "Data-driven, consults the technical team before deciding",
+  "objectionStyle": "Raises security, compliance, and integration concerns",
+  "communicationStyle": "Direct, technical, time-conscious",
+  "difficulty": "Medium"
+}

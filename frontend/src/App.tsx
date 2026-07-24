@@ -2,15 +2,25 @@ import "./App.css";
 import { AiStatusPanel } from "./components/AiStatusPanel";
 import { ChatWindow } from "./components/ChatWindow";
 import { Header } from "./components/Header";
+import { MessageInput } from "./components/MessageInput";
 import { MicButton } from "./components/MicButton";
 import { PerformanceCard } from "./components/PerformanceCard";
 import { PersonaCard } from "./components/PersonaCard";
 import { SessionControls } from "./components/SessionControls";
+import { useChat } from "./hooks/useChat";
 import { useSession } from "./hooks/useSession";
+import type { SessionState } from "./hooks/useSession";
 
 function App() {
-  const { sessionState, isSessionActive, transcript, startSession, endSession } =
-    useSession();
+  const { isSessionActive, startSession, endSession } = useSession();
+  const { messages, isLoading, error, sendMessage, resetChat } = useChat();
+
+  const aiState: SessionState = isLoading ? "thinking" : isSessionActive ? "listening" : "idle";
+
+  function handleStartSession() {
+    resetChat();
+    startSession();
+  }
 
   return (
     <div className="app-shell">
@@ -23,19 +33,20 @@ function App() {
             <p className="practice-card__subtitle">
               Practice conversations with an AI buyer.
             </p>
-            <MicButton isActive={sessionState !== "idle"} />
+            <MicButton isActive={isSessionActive} />
             <SessionControls
               isSessionActive={isSessionActive}
-              onStartSession={startSession}
+              onStartSession={handleStartSession}
               onEndSession={endSession}
             />
           </div>
 
-          <ChatWindow messages={transcript} />
+          <ChatWindow messages={messages} isLoading={isLoading} error={error} />
+          <MessageInput onSend={sendMessage} disabled={!isSessionActive} isLoading={isLoading} />
         </section>
 
         <aside className="app-main__sidebar">
-          <AiStatusPanel state={sessionState} />
+          <AiStatusPanel state={aiState} />
           <PersonaCard />
           <PerformanceCard />
         </aside>

@@ -34,6 +34,7 @@ export const env = {
   port: parsePort(process.env.PORT),
   appName: "Eubric AI Sales Roleplay",
   appVersion: readAppVersion(),
+  geminiApiKey: process.env.GEMINI_API_KEY ?? "",
 } as const;
 
 export const isProduction = env.nodeEnv === "production";
