@@ -227,6 +227,26 @@
   }
 }
 
+/* ---------- Mic status ---------- */
+
+.mic-status {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin: 0 0 4px;
+}
+
+.mic-status--warning {
+  color: #f0817f;
+}
+
+.mic-transcript {
+  font-size: 14px;
+  color: var(--text-muted);
+  font-style: italic;
+  margin: 0 0 12px;
+}
+
 /* ---------- Session controls ---------- */
 
 .session-controls {
