@@ -1,48 +1,141 @@
-# Eubric AI Sales Roleplay Platform
+# 🎙️ Eubric AI Sales Roleplay Platform
 
-A production-ready platform for AI-powered sales roleplay training. Trainees practice
-live conversations against configurable AI-simulated buyer personas and receive
-rubric-based coaching feedback, enabling sales teams to rehearse objection handling,
-discovery, and closing technique in a safe, repeatable environment.
+An AI-powered voice sales training platform built for **Eubric AI**.
 
-## Project Status
+The application simulates realistic enterprise buyers using Google Gemini, allowing sales representatives to practice live conversations, handle objections, and receive AI-generated coaching after every session.
 
-**Initialization phase.** This repository currently contains the project scaffolding
-only — folder structure, build tooling, and empty service shells. No AI logic, API
-routes, prompts, personas, or voice features have been implemented yet. See
-`docs/` for the full system architecture.
+The long-term goal of this project is to create a **fully voice-based AI customer** that behaves like a real enterprise buyer during a sales call.
 
-## Monorepo Structure
+---
+
+# 🚀 Features
+
+## ✅ AI Buyer Simulation
+
+- Dynamic AI buyer personas
+- Enterprise-focused conversations
+- Context-aware multi-turn conversations
+- Natural conversation openings
+- Buyer personalities and moods
+- Objection handling
+- Difficulty levels
+
+---
+
+## 🎤 Voice Interaction
+
+- Speech-to-Text using the Web Speech API
+- Hands-free conversation flow
+- Continuous microphone listening
+- Live transcript generation
+
+---
+
+## 🤖 Google Gemini Integration
+
+- Real-time AI responses
+- Prompt-engineered buyer behavior
+- Conversation memory
+- Configurable system prompts
+
+---
+
+## 📊 AI Coaching Report
+
+After each conversation the AI generates:
+
+- Overall Score
+- Rapport Score
+- Discovery Score
+- Communication Score
+- Objection Handling Score
+- Product Knowledge Score
+- Closing Score
+- Strengths
+- Areas for Improvement
+- Personalized Coaching Feedback
+
+---
+
+## 📈 Dashboard
+
+- Session controls
+- AI status indicators
+- Buyer persona panel
+- Performance summary
+- Live chat history
+
+---
+
+# 🏗️ Tech Stack
+
+## Frontend
+
+- React
+- TypeScript
+- Vite
+- CSS
+
+## Backend
+
+- Node.js
+- Express.js
+- TypeScript
+
+## AI
+
+- Google Gemini API
+- Prompt Engineering
+
+## Voice
+
+- Web Speech API (Speech Recognition)
+
+---
+
+# 📂 Project Structure
 
 ```
-eubric-ai-sales-roleplay/
-├── frontend/     # React + Vite + TypeScript client application
-├── backend/      # Node.js + Express + TypeScript API server
-├── prompts/      # Versioned persona / system prompt / rubric definitions (data, not code)
-├── configs/      # Tenant and environment configuration
-├── docs/         # Architecture decisions and documentation
-├── .gitignore
-├── .env.example
+eubric-ai-sales-roleplay
+│
+├── frontend/
+│   ├── components/
+│   ├── hooks/
+│   ├── services/
+│   ├── types/
+│
+├── backend/
+│   ├── controllers/
+│   ├── services/
+│   ├── routes/
+│   ├── config/
+│   ├── types/
+│
+├── prompts/
+│   ├── personas/
+│   ├── knowledge/
+│   ├── data/
+│
+├── docs/
+├── configs/
 └── README.md
 ```
 
-## Tech Stack
+---
 
-| Layer | Technology | Why |
-|---|---|---|
-| Frontend | React + Vite + TypeScript | Fast dev server, type safety, industry-standard SPA tooling |
-| Backend | Node.js + Express + TypeScript | Lightweight, widely supported API framework with strong typing |
-| Prompts | Versioned data files (JSON/YAML) | Keeps AI behavior editable without code deploys |
+# ⚙️ Installation
 
-Further technology rationale is documented in `docs/architecture/`.
+## Clone Repository
 
-## Getting Started
+```bash
+git clone https://github.com/tannisha12/eubric-ai-sales-roleplay.git
 
-### Prerequisites
-- Node.js (LTS)
-- npm
+cd eubric-ai-sales-roleplay
+```
 
-### Frontend
+---
+
+## Frontend
 
 ```bash
 cd frontend
@@ -50,9 +143,15 @@ npm install
 npm run dev
 ```
 
-Runs the Vite dev server (default: http://localhost:5173).
+Runs on:
 
-### Backend
+```
+http://localhost:5173
+```
+
+---
+
+## Backend
 
 ```bash
 cd backend
@@ -60,25 +159,90 @@ npm install
 npm run dev
 ```
 
-Runs the Express server in watch mode (default: http://localhost:4000).
+Runs on:
 
-### Environment Variables
-
-Copy `.env.example` to `.env` and fill in real values before running services that
-require configuration:
-
-```bash
-cp .env.example .env
+```
+http://localhost:4000
 ```
 
-## Repository Conventions
+---
 
-- **`prompts/`** holds AI persona, system prompt, and rubric definitions as versioned
-  data — never hardcoded into application code.
-- **`configs/`** holds tenant-specific and environment configuration, kept separate
-  from source code so behavior can change without a deploy.
-- **`docs/`** holds architecture documentation and decisions.
+# 🔑 Environment Variables
 
-## License
+Create a `.env` file inside the backend folder.
 
-Proprietary — internal project.
+```
+GEMINI_API_KEY=YOUR_API_KEY
+PORT=4000
+NODE_ENV=development
+```
+
+Never commit your API key.
+
+---
+
+# 🧪 Current Functionality
+
+- ✅ AI Chat
+- ✅ Dynamic Personas
+- ✅ Conversation Memory
+- ✅ Speech Recognition
+- ✅ Coaching Report
+- ✅ Enterprise Buyer Simulation
+- ✅ Session Management
+- ✅ Performance Dashboard
+
+---
+
+# 🛣️ Development Progress
+
+| Phase | Status |
+|--------|--------|
+| Phase 1 | ✅ Completed |
+| Phase 2 | ✅ Completed |
+| Phase 3 | ✅ Completed |
+| Phase 4 | ✅ Completed |
+| Phase 5 | ✅ Completed |
+| Phase 6 | ✅ Completed |
+| Phase 7 | ✅ Completed |
+| Phase 8 | 🚧 In Progress |
+
+---
+
+# 🎯 Future Roadmap
+
+- Natural Text-to-Speech
+- Interruptible Voice Conversations
+- Emotion Detection
+- Conversation Analytics
+- CRM Integration
+- Session Recording
+- Authentication
+- Database Persistence
+- Team Dashboard
+
+---
+
+# 📸 Demo
+
+Screenshots and demo video will be added after project completion.
+
+---
+
+# 👩‍💻 Author
+
+**Tanisha Singh**
+
+B.Tech Computer Science Engineering
+
+Built as part of an AI Sales Roleplay Platform for **Eubric AI**.
+
+---
+
+# ⭐ Acknowledgements
+
+- Google Gemini API
+- React
+- Vite
+- Express.js
+- TypeScript
