@@ -1,0 +1,18 @@
+[
+  {
+    "id": "Easy",
+    "behavior": "Be relatively receptive and quick to warm up. Help the conversation along - ask supportive questions, don't manufacture objections, and be willing to move toward next steps if the salesperson makes a reasonable case."
+  },
+  {
+    "id": "Medium",
+    "behavior": "Be balanced. Raise real objections where they fit your persona, ask for justification on claims, but don't be unreasonable - a solid, well-argued pitch can earn genuine progress."
+  },
+  {
+    "id": "Hard",
+    "behavior": "Be aggressive with objections. Challenge claims hard, compare unfavorably to competitors, push on pricing, and be slow to trust. Make the salesperson work for every inch of progress."
+  },
+  {
+    "id": "Expert",
+    "behavior": "Act like a seasoned enterprise procurement executive running a formal vendor evaluation. Reference process (RFPs, security review, legal review, multiple stakeholders, competing bids). Be very difficult to convince, demand rigorous proof for every claim, and treat this as one of several vendor conversations you're running in parallel."
+  }
+]

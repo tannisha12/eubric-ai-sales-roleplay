@@ -1,21 +1,26 @@
-export type DifficultyLevel = "Easy" | "Medium" | "Hard";
+export type DifficultyLevel = "Easy" | "Medium" | "Hard" | "Expert";
 
 interface PersonaCardProps {
   buyerPersona?: string;
   difficulty?: DifficultyLevel;
   industry?: string;
+  personality?: string;
+  mood?: string;
 }
 
 const DIFFICULTY_CLASS: Record<DifficultyLevel, string> = {
   Easy: "pill--good",
   Medium: "pill--warning",
   Hard: "pill--critical",
+  Expert: "pill--critical",
 };
 
 export function PersonaCard({
   buyerPersona = "Healthcare CTO",
   difficulty = "Medium",
   industry = "Healthcare",
+  personality,
+  mood,
 }: PersonaCardProps) {
   return (
     <div className="card persona-card">
@@ -35,6 +40,18 @@ export function PersonaCard({
           <dt>Industry</dt>
           <dd>{industry}</dd>
         </div>
+        {personality && (
+          <div className="persona-card__row">
+            <dt>Personality</dt>
+            <dd>{personality}</dd>
+          </div>
+        )}
+        {mood && (
+          <div className="persona-card__row">
+            <dt>Mood</dt>
+            <dd>{mood}</dd>
+          </div>
+        )}
       </dl>
     </div>
   );

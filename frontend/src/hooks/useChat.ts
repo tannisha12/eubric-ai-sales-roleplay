@@ -3,7 +3,7 @@ import type { ChatMessage } from "../components/ChatWindow";
 import { ChatApiError, sendChatMessage } from "../services/chatApi";
 import type { PersonaConfig } from "../types/persona";
 
-const DEFAULT_PERSONA: PersonaConfig = {
+export const DEFAULT_PERSONA: PersonaConfig = {
   name: "Healthcare CTO",
   role: "Chief Technology Officer",
   industry: "Healthcare",
@@ -15,12 +15,15 @@ const DEFAULT_PERSONA: PersonaConfig = {
   difficulty: "Medium",
 };
 
-const INITIAL_MESSAGES: ChatMessage[] = [
-  { sender: "ai", text: "Hello! I'm interested in your product." },
-];
+const DEFAULT_OPENING =
+  "Hello! I'm the Healthcare CTO joining today. I'd love to hear about Eubric AI.";
+
+function buildInitialMessages(opening: string): ChatMessage[] {
+  return [{ sender: "ai", text: opening }];
+}
 
 export function useChat(persona: PersonaConfig = DEFAULT_PERSONA) {
-  const [messages, setMessages] = useState<ChatMessage[]>(INITIAL_MESSAGES);
+  const [messages, setMessages] = useState<ChatMessage[]>(buildInitialMessages(DEFAULT_OPENING));
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -54,8 +57,8 @@ export function useChat(persona: PersonaConfig = DEFAULT_PERSONA) {
     [messages, isLoading, persona]
   );
 
-  const resetChat = useCallback(() => {
-    setMessages(INITIAL_MESSAGES);
+  const resetChat = useCallback((opening: string = DEFAULT_OPENING) => {
+    setMessages(buildInitialMessages(opening));
     setError(null);
     setIsLoading(false);
   }, []);

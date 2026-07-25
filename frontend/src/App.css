@@ -415,6 +415,145 @@
   flex-shrink: 0;
 }
 
+/* ---------- Coaching report card ---------- */
+
+.coaching-report-card__header {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.coaching-report-card__summary {
+  flex: 1;
+  min-width: 200px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.coaching-report-card__section {
+  margin-bottom: 20px;
+}
+
+.coaching-report-card__section:last-child {
+  margin-bottom: 0;
+}
+
+.coaching-report-card__section-title {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  margin: 0 0 12px;
+}
+
+.coaching-report-card__grades {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.coaching-report-card__list {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: var(--text-primary);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ---------- Score ring ---------- */
+
+.score-ring {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.score-ring__svg {
+  transform: rotate(-90deg);
+}
+
+.score-ring__track {
+  fill: none;
+  stroke: var(--surface-2);
+}
+
+.score-ring__progress {
+  fill: none;
+  transition: stroke-dashoffset 1s ease;
+}
+
+.score-ring__progress--good {
+  stroke: var(--status-good);
+}
+
+.score-ring__progress--warning {
+  stroke: var(--status-warning);
+}
+
+.score-ring__progress--critical {
+  stroke: var(--status-critical);
+}
+
+.score-ring__value {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.score-ring__number {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.1;
+}
+
+.score-ring__label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* ---------- Spinner ---------- */
+
+.coaching-report-loading {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 24px;
+}
+
+.spinner {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spinner-spin 0.8s linear infinite;
+}
+
+@keyframes spinner-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* ---------- Persona card ---------- */
 
 .persona-card__details {

@@ -4,7 +4,9 @@ import { errorHandler } from "./middleware/errorHandler";
 import { notFound } from "./middleware/notFound";
 import { requestLogger } from "./middleware/requestLogger";
 import { chatRouter } from "./routes/chat.routes";
+import { coachingReportRouter } from "./routes/coachingReport.routes";
 import { healthRouter } from "./routes/health.routes";
+import { personaRouter } from "./routes/persona.routes";
 
 export function createApp(): Application {
   const app = express();
@@ -15,6 +17,8 @@ export function createApp(): Application {
 
   app.use("/health", healthRouter);
   app.use("/api/chat", chatRouter);
+  app.use("/api/persona", personaRouter);
+  app.use("/api/coaching-report", coachingReportRouter);
 
   app.use(notFound);
   app.use(errorHandler);

@@ -1,0 +1,33 @@
+{
+  "general": [
+    "VP of Talent Acquisition",
+    "Head of Human Resources",
+    "Chief People Officer",
+    "Talent Acquisition Director",
+    "Campus Recruiting Manager",
+    "HR Operations Manager",
+    "Director of Recruiting",
+    "People Operations Lead",
+    "VP of Human Resources",
+    "Head of Campus Hiring",
+    "Senior Recruiting Manager",
+    "Chief Human Resources Officer (CHRO)",
+    "Talent Acquisition Lead",
+    "Director of People & Culture"
+  ],
+  "technical": [
+    "Director of HR Technology & Systems",
+    "VP of IT (supporting HR)",
+    "Head of Talent Technology",
+    "IT Security Manager",
+    "Director of Enterprise Applications",
+    "VP of Engineering (evaluating vendor tools)"
+  ],
+  "financial": [
+    "VP of Finance (HR Tech Budget Owner)",
+    "Director of Procurement",
+    "Head of Vendor Management",
+    "Finance Business Partner for HR",
+    "Director of Financial Planning & Analysis"
+  ]
+}
