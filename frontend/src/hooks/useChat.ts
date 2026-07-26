@@ -2,6 +2,7 @@ import { useCallback, useState } from "react";
 import type { ChatMessage } from "../components/ChatWindow";
 import { ChatApiError, sendChatMessage } from "../services/chatApi";
 import type { PersonaConfig } from "../types/persona";
+import { randomThinkingDelayMs, wait } from "../utils/thinkingIndicator";
 
 export const DEFAULT_PERSONA: PersonaConfig = {
   name: "Healthcare CTO",
@@ -13,17 +14,17 @@ export const DEFAULT_PERSONA: PersonaConfig = {
   objectionStyle: "Raises security, compliance, and integration concerns",
   communicationStyle: "Direct, technical, time-conscious",
   difficulty: "Medium",
+  companyName: "Meridian Health Partners",
+  mainResponsibilities: "Owns full-cycle recruiting strategy and hiring team performance",
+  currentChallenges: "Struggling with a high volume of applicants and slow screening times",
+  buyingMotivation: "Was tasked with modernizing the hiring stack this fiscal year",
+  painPoints: "Too much recruiter time lost to manual resume screening",
+  successMetrics: "Time-to-hire reduced by at least 30%",
+  expectedOutcome: "Clear proof of ROI to present at the next budget review",
 };
 
-const DEFAULT_OPENING =
-  "Hello! I'm the Healthcare CTO joining today. I'd love to hear about Eubric AI.";
-
-function buildInitialMessages(opening: string): ChatMessage[] {
-  return [{ sender: "ai", text: opening }];
-}
-
 export function useChat(persona: PersonaConfig = DEFAULT_PERSONA) {
-  const [messages, setMessages] = useState<ChatMessage[]>(buildInitialMessages(DEFAULT_OPENING));
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -45,6 +46,9 @@ export function useChat(persona: PersonaConfig = DEFAULT_PERSONA) {
           conversationHistory: history,
           persona,
         });
+        // A brief, randomized "thinking" pause before the reply appears - skipped
+        // entirely on error, so failures surface immediately.
+        await wait(randomThinkingDelayMs());
         setMessages((prev) => [...prev, { sender: "ai", text: reply }]);
       } catch (err) {
         const message =
@@ -57,8 +61,8 @@ export function useChat(persona: PersonaConfig = DEFAULT_PERSONA) {
     [messages, isLoading, persona]
   );
 
-  const resetChat = useCallback((opening: string = DEFAULT_OPENING) => {
-    setMessages(buildInitialMessages(opening));
+  const resetChat = useCallback((openingMessage?: string) => {
+    setMessages(openingMessage ? [{ sender: "ai", text: openingMessage }] : []);
     setError(null);
     setIsLoading(false);
   }, []);

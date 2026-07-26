@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import "./App.css";
-import { AiStatusPanel } from "./components/AiStatusPanel";
+import { AiStatusPanel, STATUS_LABEL } from "./components/AiStatusPanel";
 import { ChatWindow } from "./components/ChatWindow";
 import { CoachingReportCard } from "./components/CoachingReportCard";
 import { Header } from "./components/Header";
@@ -9,7 +9,9 @@ import { MicButton } from "./components/MicButton";
 import { PerformanceCard } from "./components/PerformanceCard";
 import { PersonaCard } from "./components/PersonaCard";
 import type { DifficultyLevel } from "./components/PersonaCard";
+import { SalesAssistantCard } from "./components/SalesAssistantCard";
 import { SessionControls } from "./components/SessionControls";
+import { SessionOnboarding } from "./components/SessionOnboarding";
 import { DEFAULT_PERSONA, useChat } from "./hooks/useChat";
 import { useSession } from "./hooks/useSession";
 import type { SessionState } from "./hooks/useSession";
@@ -19,6 +21,12 @@ import { CoachingReportApiError, fetchCoachingReport } from "./services/coaching
 import { fetchRandomPersona, PersonaApiError } from "./services/personaApi";
 import type { CoachingReport } from "./types/coachingReport";
 import type { PersonaConfig } from "./types/persona";
+import { derivePerformanceMetrics } from "./utils/performanceMetrics";
+import { getThinkingLabel } from "./utils/thinkingIndicator";
+import { shouldSendTranscript } from "./utils/transcriptProcessing";
+
+const UNCLEAR_TRANSCRIPT_MESSAGE = "I couldn't clearly understand that. Please try again.";
+const FALLBACK_OPENING_GREETING = "Hello!";
 
 type MicStatus = "listening" | "processing" | "idle";
 
@@ -42,16 +50,19 @@ function App() {
   const [coachingReport, setCoachingReport] = useState<CoachingReport | null>(null);
   const [isCoachingReportLoading, setIsCoachingReportLoading] = useState(false);
   const [coachingReportError, setCoachingReportError] = useState<string | null>(null);
+  const [transcriptError, setTranscriptError] = useState<string | null>(null);
   const {
     isListening,
     interimTranscript,
     finalTranscript,
+    finalTranscriptConfidence,
     error: speechError,
     browserSupported,
     start: startListening,
     stop: stopListening,
     resetTranscript,
   } = useSpeechRecognition();
+  const lastSentTranscriptRef = useRef<string | null>(null);
   const {
     isSpeaking,
     isSupported: speechSynthesisSupported,
@@ -70,13 +81,33 @@ function App() {
 
   const micStatus: MicStatus = !isSessionActive ? "idle" : isLoading ? "processing" : isListening ? "listening" : "idle";
 
+  const voiceReady = browserSupported && speechSynthesisSupported;
+  const progressLabel =
+    !isSessionActive && messages.length === 0
+      ? "Not started"
+      : `${messages.length} message${messages.length === 1 ? "" : "s"}`;
+
   useEffect(() => {
     if (!finalTranscript) {
       return;
     }
-    sendMessage(finalTranscript);
+
+    const { shouldSend, normalizedTranscript } = shouldSendTranscript(
+      finalTranscript,
+      finalTranscriptConfidence ?? undefined,
+      lastSentTranscriptRef.current
+    );
     resetTranscript();
-  }, [finalTranscript, sendMessage, resetTranscript]);
+
+    if (!shouldSend) {
+      setTranscriptError(UNCLEAR_TRANSCRIPT_MESSAGE);
+      return;
+    }
+
+    setTranscriptError(null);
+    lastSentTranscriptRef.current = normalizedTranscript;
+    sendMessage(normalizedTranscript);
+  }, [finalTranscript, finalTranscriptConfidence, sendMessage, resetTranscript]);
 
   const prevMessageCountRef = useRef(messages.length);
 
@@ -90,24 +121,30 @@ function App() {
 
     const latestMessage = messages[messages.length - 1];
     if (latestMessage.sender === "ai") {
-      speak(latestMessage.text);
+      speak(latestMessage.text, {
+        rate: persona.speechRate,
+        pitch: persona.speechPitch,
+        pauseMs: persona.speechPauseMs,
+      });
     }
-  }, [messages, speak]);
+  }, [messages, speak, persona]);
 
   async function handleStartSession() {
     stopSpeaking();
     resetTranscript();
+    lastSentTranscriptRef.current = null;
     setCoachingReport(null);
     setCoachingReportError(null);
     setPersonaError(null);
+    setTranscriptError(null);
 
     let nextPersona = DEFAULT_PERSONA;
-    let opening = "Hello! I'm the Healthcare CTO joining today. I'd love to hear about Eubric AI.";
+    let openingGreeting = FALLBACK_OPENING_GREETING;
 
     try {
       const random = await fetchRandomPersona();
       nextPersona = random.persona;
-      opening = random.opening;
+      openingGreeting = random.opening;
     } catch (err) {
       setPersonaError(
         err instanceof PersonaApiError
@@ -117,9 +154,11 @@ function App() {
     }
 
     setPersona(nextPersona);
-    resetChat(opening);
+    // The greeting becomes the first message in the transcript, so re-sync the
+    // "message just added" counter to match - otherwise it won't be spoken aloud.
+    prevMessageCountRef.current = 0;
+    resetChat(openingGreeting);
     startSession();
-    speak(opening);
     if (browserSupported) {
       startListening();
     }
@@ -130,7 +169,9 @@ function App() {
     stopSpeaking();
     endSession();
 
-    if (messages.length < 2) {
+    // messages[0] is the seeded opening greeting, not a real exchange - require at
+    // least a salesperson turn and an AI reply on top of it before reporting.
+    if (messages.length < 3) {
       return;
     }
 
@@ -158,57 +199,103 @@ function App() {
       <main className="app-main">
         <section className="app-main__primary">
           <div className="card practice-card">
-            <h1 className="practice-card__title">AI Sales Practice</h1>
-            <p className="practice-card__subtitle">
-              Practice conversations with an AI buyer.
-            </p>
-            <MicButton isActive={isListening} disabled={!isSessionActive || !browserSupported} />
-            <p className="mic-status" aria-live="polite">
-              {MIC_STATUS_LABEL[micStatus]}
-            </p>
-            {isSessionActive && interimTranscript && (
-              <p className="mic-transcript">{interimTranscript}</p>
-            )}
-            {!browserSupported && (
-              <p className="mic-status mic-status--warning" role="alert">
-                Speech recognition isn't supported in this browser. Try Chrome or Edge, or type your
-                response below.
-              </p>
-            )}
-            {speechError && (
-              <p className="mic-status mic-status--warning" role="alert">
-                {speechError}
-              </p>
-            )}
-            {isSpeaking && (
+            <div className="practice-card__top">
+              <span className="eyebrow">Live Practice Session</span>
+              <h1 className="practice-card__title">AI Sales Practice</h1>
+              <p className="practice-card__subtitle">Practice conversations with an AI buyer.</p>
+            </div>
+
+            <div className="practice-card__stats">
+              <div className="practice-card__stat">
+                <span className="eyebrow">Status</span>
+                <span className="practice-card__stat-value">{STATUS_LABEL[aiState]}</span>
+              </div>
+              <div className="practice-card__stat-divider" aria-hidden="true" />
+              <div className="practice-card__stat">
+                <span className="eyebrow">Buyer</span>
+                <span className="practice-card__stat-value">{persona.name ?? persona.role}</span>
+              </div>
+              <div className="practice-card__stat-divider" aria-hidden="true" />
+              <div className="practice-card__stat">
+                <span className="eyebrow">Progress</span>
+                <span className="practice-card__stat-value">{progressLabel}</span>
+              </div>
+              <div className="practice-card__stat-divider" aria-hidden="true" />
+              <div className="practice-card__stat">
+                <span className="eyebrow">Voice</span>
+                <span className="practice-card__stat-value">
+                  {voiceReady ? "Ready" : "Text Only"}
+                </span>
+              </div>
+            </div>
+
+            <div className="practice-card__mic-zone">
+              <MicButton isActive={isListening} disabled={!isSessionActive || !browserSupported} />
               <p className="mic-status" aria-live="polite">
-                🔊 AI Speaking...
+                {MIC_STATUS_LABEL[micStatus]}
               </p>
-            )}
-            {!speechSynthesisSupported && (
-              <p className="mic-status mic-status--warning" role="alert">
-                Voice responses aren't supported in this browser. AI replies will still appear as
-                text.
-              </p>
-            )}
-            {speechSynthesisError && (
-              <p className="mic-status mic-status--warning" role="alert">
-                {speechSynthesisError}
-              </p>
-            )}
-            {personaError && (
-              <p className="mic-status mic-status--warning" role="alert">
-                {personaError}
-              </p>
-            )}
-            <SessionControls
-              isSessionActive={isSessionActive}
-              onStartSession={handleStartSession}
-              onEndSession={handleEndSession}
-            />
+              {isSessionActive && interimTranscript && (
+                <p className="mic-transcript">{interimTranscript}</p>
+              )}
+              {!browserSupported && (
+                <p className="mic-status mic-status--warning" role="alert">
+                  Speech recognition isn't supported in this browser. Try Chrome or Edge, or type
+                  your response below.
+                </p>
+              )}
+              {speechError && (
+                <p className="mic-status mic-status--warning" role="alert">
+                  {speechError}
+                </p>
+              )}
+              {isSpeaking && (
+                <p className="mic-status" aria-live="polite">
+                  🔊 AI Speaking...
+                </p>
+              )}
+              {!speechSynthesisSupported && (
+                <p className="mic-status mic-status--warning" role="alert">
+                  Voice responses aren't supported in this browser. AI replies will still appear as
+                  text.
+                </p>
+              )}
+              {speechSynthesisError && (
+                <p className="mic-status mic-status--warning" role="alert">
+                  {speechSynthesisError}
+                </p>
+              )}
+              {personaError && (
+                <p className="mic-status mic-status--warning" role="alert">
+                  {personaError}
+                </p>
+              )}
+              {transcriptError && (
+                <p className="mic-status mic-status--warning" role="alert">
+                  {transcriptError}
+                </p>
+              )}
+              <SessionControls
+                isSessionActive={isSessionActive}
+                onStartSession={handleStartSession}
+                onEndSession={handleEndSession}
+              />
+            </div>
           </div>
 
-          <ChatWindow messages={messages} isLoading={isLoading} error={error} />
+          {!isSessionActive && <SessionOnboarding difficulty={persona.difficulty} />}
+
+          <ChatWindow
+            messages={messages}
+            isLoading={isLoading}
+            error={error}
+            emptyStateMessage={!isSessionActive ? "Your conversation will appear here" : undefined}
+            emptyStateHint={
+              !isSessionActive
+                ? "Start a session and your AI buyer will open the conversation. Respond by voice or by typing below."
+                : undefined
+            }
+            thinkingLabel={getThinkingLabel(persona)}
+          />
           <MessageInput onSend={sendMessage} disabled={!isSessionActive} isLoading={isLoading} />
 
           {isCoachingReportLoading && (
@@ -227,14 +314,11 @@ function App() {
 
         <aside className="app-main__sidebar">
           <AiStatusPanel state={aiState} />
-          <PersonaCard
-            buyerPersona={persona.name ? `${persona.name} - ${persona.role}` : persona.role}
-            difficulty={toDifficultyLevel(persona.difficulty)}
-            industry={persona.industry}
-            personality={persona.personality}
-            mood={persona.mood}
+          <PersonaCard persona={persona} difficulty={toDifficultyLevel(persona.difficulty)} />
+          <SalesAssistantCard persona={persona} />
+          <PerformanceCard
+            metrics={coachingReport ? derivePerformanceMetrics(coachingReport.grades) : undefined}
           />
-          <PerformanceCard />
         </aside>
       </main>
     </div>

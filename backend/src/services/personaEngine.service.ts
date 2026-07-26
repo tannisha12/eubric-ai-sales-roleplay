@@ -23,6 +23,14 @@ interface DifficultyDefinition {
   behavior: string;
 }
 
+interface SpeakingStyleDefinition {
+  id: string;
+  label: string;
+  rate: number;
+  pitch: number;
+  pauseMs: number;
+}
+
 type RolePools = Record<RolePoolKey, string[]>;
 
 interface NamePools {
@@ -47,9 +55,16 @@ const names = loadJson<NamePools>("names.json");
 const personalities = loadJson<PersonalityDefinition[]>("personalities.json");
 const moods = loadJson<MoodDefinition[]>("moods.json");
 const difficulties = loadJson<DifficultyDefinition[]>("difficulties.json");
+const speakingStyles = loadJson<SpeakingStyleDefinition[]>("speakingStyles.json");
 const greetings = loadJson<string[]>("greetings.json");
-const introductions = loadJson<string[]>("introductions.json");
 const invitations = loadJson<string[]>("invitations.json");
+const companyNames = loadJson<string[]>("companyNames.json");
+const mainResponsibilitiesPool = loadJson<string[]>("mainResponsibilities.json");
+const currentChallengesPool = loadJson<string[]>("currentChallenges.json");
+const buyingMotivationsPool = loadJson<string[]>("buyingMotivations.json");
+const painPointsPool = loadJson<string[]>("painPoints.json");
+const successMetricsPool = loadJson<string[]>("successMetrics.json");
+const expectedOutcomesPool = loadJson<string[]>("expectedOutcomes.json");
 
 function pickOne<T>(items: T[]): T {
   return items[Math.floor(Math.random() * items.length)];
@@ -69,6 +84,7 @@ export function generateRandomPersona(): PersonaConfig {
   const personality = pickOne(personalities);
   const mood = pickOne(moods);
   const difficulty = pickOne(difficulties);
+  const speakingStyle = pickOne(speakingStyles);
   const firstName = pickOne(names.first);
   const lastName = pickOne(names.last);
 
@@ -88,21 +104,47 @@ export function generateRandomPersona(): PersonaConfig {
     mood: mood.label,
     moodBehavior: mood.behavior,
     difficultyBehavior: difficulty.behavior,
+    speakingStyle: speakingStyle.label,
+    speechRate: speakingStyle.rate,
+    speechPitch: speakingStyle.pitch,
+    speechPauseMs: speakingStyle.pauseMs,
+    companyName: pickOne(companyNames),
+    mainResponsibilities: pickOne(mainResponsibilitiesPool),
+    currentChallenges: pickOne(currentChallengesPool),
+    buyingMotivation: pickOne(buyingMotivationsPool),
+    painPoints: pickOne(painPointsPool),
+    successMetrics: pickOne(successMetricsPool),
+    expectedOutcome: pickOne(expectedOutcomesPool),
   };
 }
 
-function fillIntroduction(template: string, persona: PersonaConfig): string {
-  return template
-    .split("{{NAME}}")
-    .join(persona.name ?? "your contact")
-    .split("{{ROLE}}")
-    .join(persona.role);
+function firstNameOf(persona: PersonaConfig): string | undefined {
+  return persona.name?.trim().split(/\s+/)[0];
 }
 
+/**
+ * The opening message is how a busy professional actually answers a business phone
+ * call - a bare "Hello?", a time-of-day greeting, or their name, and nothing else.
+ * No job title, no company, no explanation. Everything else (role, company,
+ * invitation to hear the pitch) is revealed gradually across later turns, driven by
+ * the system prompt rather than templated here.
+ */
 export function buildOpening(persona: PersonaConfig): string {
-  const greeting = pickOne(greetings);
-  const introduction = fillIntroduction(pickOne(introductions), persona);
-  const invitation = pickOne(invitations);
+  const firstName = firstNameOf(persona);
+  const pool = firstName ? greetings : greetings.filter((template) => !template.includes("{{NAME}}"));
+  return pickOne(pool).split("{{NAME}}").join(firstName ?? "");
+}
 
-  return `${greeting} ${introduction} ${invitation}`;
+/** A short, name-only example of how the buyer might mention their name once the
+ * salesperson has introduced themselves - deliberately role-free, since job title
+ * only comes up once it's asked or the conversation naturally calls for it. */
+export function buildNameOnlyIntroExample(persona: PersonaConfig): string {
+  const firstName = firstNameOf(persona);
+  return firstName ? `I'm ${firstName}.` : "";
+}
+
+/** A randomly-picked example of how the buyer might eventually invite the
+ * salesperson to continue and lead the conversation, once introductions are done. */
+export function buildInvitationExample(): string {
+  return pickOne(invitations);
 }

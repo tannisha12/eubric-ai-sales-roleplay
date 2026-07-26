@@ -150,32 +150,106 @@
 
 .card:hover {
   box-shadow: var(--shadow-raised);
+  transform: translateY(-1px);
 }
 
 .card__title {
   font-size: 15px;
-  color: var(--text-secondary);
+  font-weight: 600;
+  color: var(--text-primary);
   margin-bottom: 16px;
 }
 
-/* ---------- Practice card ---------- */
+.card--compact {
+  padding: 16px 20px;
+}
+
+/* ---------- Shared micro-label utility ---------- */
+
+.eyebrow {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* ---------- Practice card (session hero) ---------- */
 
 .practice-card {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 8px;
-  padding: 40px 24px;
+  gap: 20px;
+  padding: 28px 24px 24px;
+}
+
+.practice-card__top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
 }
 
 .practice-card__title {
-  font-size: 26px;
+  font-size: 24px;
 }
 
 .practice-card__subtitle {
   color: var(--text-secondary);
-  margin-bottom: 16px;
+  margin: 0;
+}
+
+.practice-card__stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 18px;
+  width: 100%;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+}
+
+.practice-card__stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 72px;
+}
+
+.practice-card__stat-value {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.practice-card__stat-divider {
+  width: 1px;
+  height: 24px;
+  background: var(--border);
+}
+
+.practice-card__mic-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  width: 100%;
+}
+
+@media (max-width: 520px) {
+  .practice-card__stat-divider {
+    display: none;
+  }
+
+  .practice-card__stats {
+    gap: 14px 24px;
+  }
 }
 
 /* ---------- Mic button ---------- */
@@ -192,7 +266,7 @@
   cursor: pointer;
   box-shadow: var(--shadow-raised);
   transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
-  margin: 8px 0 20px;
+  margin: 8px 0 16px;
 }
 
 .mic-button__icon {
@@ -337,6 +411,14 @@
   color: rgba(255, 255, 255, 0.75);
 }
 
+.thinking-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-style: italic;
+  color: var(--text-muted);
+}
+
 .thinking-dots {
   display: inline-flex;
   gap: 4px;
@@ -368,6 +450,38 @@
     transform: translateY(-4px);
     opacity: 1;
   }
+}
+
+.chat-window__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  padding: 44px 24px;
+}
+
+.chat-window__empty-icon {
+  width: 36px;
+  height: 36px;
+  color: var(--text-muted);
+  opacity: 0.6;
+  margin-bottom: 4px;
+}
+
+.chat-window__empty-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.chat-window__empty-hint {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  max-width: 320px;
+  margin: 0;
 }
 
 .chat-window__error {
@@ -556,30 +670,80 @@
 
 /* ---------- Persona card ---------- */
 
-.persona-card__details {
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.persona-card__row {
+.persona-card__header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 12px;
+  margin-bottom: 14px;
 }
 
-.persona-card__row dt {
-  color: var(--text-muted);
-  font-size: 13px;
-}
-
-.persona-card__row dd {
-  margin: 0;
+.persona-card__avatar {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
   color: var(--text-primary);
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 700;
+  box-shadow: 0 0 0 3px var(--surface-1), 0 0 0 4px var(--border);
+}
+
+.persona-card__identity {
+  min-width: 0;
+}
+
+.persona-card__name {
+  margin: 0 0 2px;
+  color: var(--text-primary);
+  font-size: 15.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.persona-card__role {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 12.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.persona-card__role em {
+  color: var(--text-secondary);
+  font-style: normal;
+}
+
+.persona-card__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 11.5px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badge--accent {
+  background: rgba(57, 135, 229, 0.14);
+  border-color: rgba(57, 135, 229, 0.35);
+  color: var(--accent);
 }
 
 .pill {
@@ -607,38 +771,51 @@
 
 /* ---------- AI status panel ---------- */
 
-.ai-status-panel__indicator {
+.ai-status-panel__row {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 12px 16px;
-  border-radius: var(--radius-md);
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.ai-status-panel__title {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.ai-status-panel__indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
   background: var(--surface-2);
 }
 
 .ai-status-panel__dot {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background: var(--text-muted);
   flex-shrink: 0;
 }
 
 .ai-status-panel__label {
-  font-size: 14px;
+  font-size: 12.5px;
   font-weight: 600;
   color: var(--text-primary);
 }
 
-.ai-status-panel__indicator--listening .ai-status-panel__dot {
+.ai-status-panel__row--listening .ai-status-panel__dot {
   background: var(--accent);
 }
 
-.ai-status-panel__indicator--thinking .ai-status-panel__dot {
+.ai-status-panel__row--thinking .ai-status-panel__dot {
   background: var(--status-warning);
 }
 
-.ai-status-panel__indicator--speaking .ai-status-panel__dot {
+.ai-status-panel__row--speaking .ai-status-panel__dot {
   background: var(--status-good);
 }
 
@@ -662,7 +839,7 @@
 .performance-card__list {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
 .performance-metric__header {
@@ -706,4 +883,280 @@
 
 .meter__fill--critical {
   background: var(--status-critical);
+}
+
+.performance-card__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  padding: 12px 8px 4px;
+}
+
+.performance-card__empty-icon {
+  width: 28px;
+  height: 28px;
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+
+.performance-card__empty-text {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  max-width: 220px;
+}
+
+/* ---------- Sales assistant card ---------- */
+
+.sales-assistant-card {
+  display: flex;
+  flex-direction: column;
+  max-height: 420px;
+  overflow: hidden;
+}
+
+.sales-assistant__tabs {
+  display: flex;
+  flex-shrink: 0;
+  gap: 4px;
+  padding: 3px;
+  border-radius: var(--radius-md);
+  background: var(--surface-2);
+  margin-bottom: 14px;
+}
+
+.sales-assistant__tab {
+  flex: 1;
+  padding: 6px 10px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.sales-assistant__tab:hover {
+  color: var(--text-secondary);
+}
+
+.sales-assistant__tab--active {
+  background: var(--surface-1);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-card);
+}
+
+.sales-assistant__panel {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.sales-assistant__panel::-webkit-scrollbar {
+  width: 8px;
+}
+
+.sales-assistant__panel::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: var(--radius-full);
+}
+
+/* ---------- Key/value rows (Sales Assistant > Persona tab) ---------- */
+
+.kv-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.kv-group__title {
+  margin-bottom: 8px;
+}
+
+.kv-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.kv-row__label {
+  display: block;
+  margin-bottom: 2px;
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.kv-row__value {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ---------- Accordion (Sales Assistant > Product / FAQ tabs) ---------- */
+
+.accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.accordion__item {
+  border: 1px solid var(--border);
+  border-left: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  overflow: hidden;
+  transition: border-color 0.2s ease;
+}
+
+.accordion__item--open {
+  border-left-color: var(--accent);
+}
+
+.accordion__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 12.5px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+.accordion__item--open .accordion__trigger {
+  color: var(--accent);
+}
+
+.accordion__chevron {
+  width: 16px;
+  height: 16px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.accordion__chevron--expanded {
+  transform: rotate(180deg);
+}
+
+.accordion__body {
+  padding: 0 12px 12px;
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.accordion__intro {
+  margin: 0 0 8px;
+  color: var(--text-secondary);
+}
+
+.accordion__bullets {
+  margin: 0;
+  padding-left: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  color: var(--text-primary);
+}
+
+.accordion__answer {
+  margin: 0;
+}
+
+/* ---------- Session onboarding (center panel, idle state) ---------- */
+
+.onboarding-card__goal {
+  margin: 0 0 12px;
+  color: var(--text-secondary);
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+
+.onboarding-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.onboarding-card__skills {
+  margin-bottom: 14px;
+}
+
+.onboarding-card__skills-label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.onboarding-card__chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.onboarding-card__tips {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.onboarding-card__tips li {
+  position: relative;
+  padding-left: 16px;
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.onboarding-card__tips li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 6px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* ---------- Focus states ---------- */
+
+.btn:focus-visible,
+.icon-button:focus-visible,
+.mic-button:focus-visible,
+.message-input__send:focus-visible,
+.sales-assistant__tab:focus-visible,
+.accordion__trigger:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }

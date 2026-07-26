@@ -1,0 +1,44 @@
+[
+  {
+    "id": "fast",
+    "label": "Fast",
+    "rate": 1.25,
+    "pitch": 1.05,
+    "pauseMs": 120
+  },
+  {
+    "id": "slow",
+    "label": "Slow",
+    "rate": 0.82,
+    "pitch": 0.97,
+    "pauseMs": 480
+  },
+  {
+    "id": "confident",
+    "label": "Confident",
+    "rate": 1.05,
+    "pitch": 0.93,
+    "pauseMs": 260
+  },
+  {
+    "id": "calm",
+    "label": "Calm",
+    "rate": 0.9,
+    "pitch": 0.96,
+    "pauseMs": 380
+  },
+  {
+    "id": "analytical",
+    "label": "Analytical",
+    "rate": 0.95,
+    "pitch": 1.0,
+    "pauseMs": 420
+  },
+  {
+    "id": "energetic",
+    "label": "Energetic",
+    "rate": 1.18,
+    "pitch": 1.1,
+    "pauseMs": 150
+  }
+]

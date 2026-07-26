@@ -2,6 +2,8 @@ import fs from "node:fs";
 import path from "node:path";
 import { getLlmProvider } from "./llm/llmProviderFactory";
 import type { JsonSchema } from "./llm/llmProvider";
+import { DEFAULT_PERSONA } from "./persona.service";
+import { deriveBuyerState } from "./buyerState/buyerState.service";
 import type { ChatTurn } from "../types/chat";
 import type { CoachingReportGrades, CoachingReportResponseBody } from "../types/coachingReport";
 import type { PersonaConfig } from "../types/persona";
@@ -66,6 +68,19 @@ function describePersona(persona?: PersonaConfig): string {
     `Personality: ${persona.personality ?? "Unspecified"}`,
     `Mood: ${persona.mood ?? "Unspecified"}`,
     `Difficulty: ${persona.difficulty}`,
+  ].join("\n");
+}
+
+function describeBuyerState(conversationHistory: ChatTurn[], persona?: PersonaConfig): string {
+  const buyerState = deriveBuyerState(conversationHistory, persona ?? DEFAULT_PERSONA);
+
+  return [
+    `Final interest level: ${buyerState.interestBucket}`,
+    `Conversation stage reached: ${buyerState.stage.replace(/_/g, " ")}`,
+    `Buyer's patience by the end of the call: ${buyerState.patience.tier} (internal score ${buyerState.patience.score}/100)${buyerState.patience.shouldEndCall ? " - the buyer's patience ran out during this call, likely due to rambling, repetition, dodged questions, or generic pitching. Call this out specifically in the feedback." : ""}`,
+    `Pain points surfaced: ${buyerState.memory.painPoints.length > 0 ? buyerState.memory.painPoints.join("; ") : "none identified"}`,
+    `Objections raised by the buyer: ${buyerState.memory.objectionsRaised.length > 0 ? buyerState.memory.objectionsRaised.join(", ") : "none"}`,
+    `Follow-ups the salesperson promised: ${buyerState.memory.promisedFollowUps.length > 0 ? buyerState.memory.promisedFollowUps.join("; ") : "none"}`,
   ].join("\n");
 }
 
@@ -155,6 +170,9 @@ export async function generateCoachingReport(
   const userPrompt = [
     "## Buyer persona",
     describePersona(persona),
+    "",
+    "## Buyer engagement signals (internal, derived from the transcript)",
+    describeBuyerState(conversationHistory, persona),
     "",
     "## Conversation transcript",
     formatTranscript(conversationHistory),

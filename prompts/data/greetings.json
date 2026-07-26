@@ -1,22 +1,9 @@
 [
-  "Hello! Good morning.",
-  "Hi, thanks for joining.",
+  "Hello?",
+  "Hi, this is {{NAME}}.",
+  "Good morning.",
   "Good afternoon.",
-  "Hello! Nice to meet you.",
-  "Hi there.",
-  "Good morning, thanks for making the time.",
-  "Hey, good to connect.",
-  "Hi, thanks for hopping on.",
-  "Good afternoon, thanks for setting this up.",
-  "Hello, glad we could find a time.",
-  "Hi, good to see this on the calendar.",
-  "Morning! Thanks for jumping on the call.",
-  "Hey there, thanks for having me.",
-  "Hi, appreciate you making room for this.",
-  "Good to meet you.",
-  "Hello, thanks for the invite.",
-  "Hi, good afternoon.",
-  "Hey, thanks for carving out time today.",
-  "Hello there, nice to connect.",
-  "Hi, thanks for waiting for me to join."
+  "Good evening.",
+  "Hello, {{NAME}} speaking.",
+  "Hi there."
 ]

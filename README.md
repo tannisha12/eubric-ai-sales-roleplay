@@ -1,10 +1,23 @@
 # 🎙️ Eubric AI Sales Roleplay Platform
 
+![React](https://img.shields.io/badge/React-19-blue)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)
+![Node.js](https://img.shields.io/badge/Node.js-Express-green)
+![Gemini](https://img.shields.io/badge/Google-Gemini-orange)
+![Status](https://img.shields.io/badge/Phase-8-success)
+
+
 An AI-powered voice sales training platform built for **Eubric AI**.
 
-The application simulates realistic enterprise buyers using Google Gemini, allowing sales representatives to practice live conversations, handle objections, and receive AI-generated coaching after every session.
+The platform enables sales representatives to practice realistic voice conversations with AI-generated enterprise buyers, receive instant coaching feedback, and improve discovery, objection handling, communication, confidence, and closing skills.
 
-The long-term goal of this project is to create a **fully voice-based AI customer** that behaves like a real enterprise buyer during a sales call.
+It combines dynamic buyer personas, prompt engineering, conversation state management, and AI-powered coaching into a realistic enterprise sales training experience.
+
+---
+
+## 🎬 Project Preview
+
+> Demo video and screenshots will be added after the final submission.
 
 ---
 
@@ -22,12 +35,46 @@ The long-term goal of this project is to create a **fully voice-based AI custome
 
 ---
 
+## 🧠 Smart Conversation Engine
+
+- Buyer memory
+- Conversation state tracking
+- Dynamic greeting flow
+- Context-aware responses
+- Natural turn-taking
+- Improved conversation realism
+
+---
+
+## 💼 Sales Assistant
+
+- Buyer profile
+- Product overview
+- Frequently asked questions
+- Demo highlights
+- Sales preparation panel
+
+---
+
+## 🎯 Session Experience
+
+- Session onboarding
+- Live typing indicator
+- AI speaking status
+- Improved sidebar layout
+- Better conversation flow
+
+---
+
 ## 🎤 Voice Interaction
 
 - Speech-to-Text using the Web Speech API
 - Hands-free conversation flow
 - Continuous microphone listening
-- Live transcript generation
+- Speech-to-Text with transcript normalization
+- Transcript validation
+- Duplicate transcript prevention
+- Improved speech processing
 
 ---
 
@@ -54,16 +101,22 @@ After each conversation the AI generates:
 - Strengths
 - Areas for Improvement
 - Personalized Coaching Feedback
+- Personalized improvement suggestions
+- Overall conversation analysis
+
 
 ---
 
 ## 📈 Dashboard
 
-- Session controls
-- AI status indicators
-- Buyer persona panel
-- Performance summary
-- Live chat history
+- AI Status
+- Buyer Persona
+- Sales Assistant
+- Performance Summary
+- Session Onboarding
+- Live Chat
+- Voice Controls
+- Responsive interface
 
 ---
 
@@ -191,6 +244,14 @@ Never commit your API key.
 - ✅ Enterprise Buyer Simulation
 - ✅ Session Management
 - ✅ Performance Dashboard
+- ✅ Buyer State Engine
+- ✅ Conversation State Management
+- ✅ Sales Assistant
+- ✅ Product Knowledge
+- ✅ Typing Indicator
+- ✅ Transcript Normalization
+- ✅ Text-to-Speech
+- ✅ Better Greeting Flow
 
 ---
 
@@ -205,28 +266,38 @@ Never commit your API key.
 | Phase 5 | ✅ Completed |
 | Phase 6 | ✅ Completed |
 | Phase 7 | ✅ Completed |
-| Phase 8 | 🚧 In Progress |
+| Phase 8 | ✅ Completed |
 
 ---
 
+# 📖 Development Journal
+
+The complete engineering journey, implementation phases, challenges, and lessons learned are documented in:
+
+```text
+docs/development-journal.md
+```
+
+---
+
+
 # 🎯 Future Roadmap
 
-- Natural Text-to-Speech
-- Interruptible Voice Conversations
-- Emotion Detection
-- Conversation Analytics
-- CRM Integration
-- Session Recording
 - Authentication
 - Database Persistence
+- CRM Integration
 - Team Dashboard
+- Conversation Analytics
+- Provider-independent Voice AI
+- Interruptible Voice Conversations
+- Emotion Detection
+- Session Recording
 
 ---
 
 # 📸 Demo
 
-Screenshots and demo video will be added after project completion.
-
+Screenshots and a walkthrough video will be added after the final submission.
 ---
 
 # 👩‍💻 Author
@@ -246,3 +317,23 @@ Built as part of an AI Sales Roleplay Platform for **Eubric AI**.
 - Vite
 - Express.js
 - TypeScript
+
+---
+
+---
+
+## ✨ Key Highlights
+
+- 🎙️ Voice-based AI sales conversations
+- 🤖 Dynamic enterprise buyer personas
+- 🧠 AI-generated coaching reports
+- 📊 Real-time performance evaluation
+- 💼 Sales Assistant with product knowledge
+- 🚀 Modern React + TypeScript architecture
+
+---
+
+
+# 📄 License
+
+This project was developed for educational and demonstration purposes as part of the Eubric AI Sales Roleplay assignment.

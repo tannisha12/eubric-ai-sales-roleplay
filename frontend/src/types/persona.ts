@@ -14,5 +14,18 @@ export interface PersonaConfig {
   mood?: string;
   moodBehavior?: string;
   difficultyBehavior?: string;
+  // Drives text-to-speech playback only (rate/pitch/pause) - never sent to the LLM.
+  speakingStyle?: string;
+  speechRate?: number;
+  speechPitch?: number;
+  speechPauseMs?: number;
+  // Buyer-profile detail shown in the Buyer Persona panel (CRM-style fields).
+  companyName?: string;
+  mainResponsibilities?: string;
+  currentChallenges?: string;
+  buyingMotivation?: string;
+  painPoints?: string;
+  successMetrics?: string;
+  expectedOutcome?: string;
 }
 
